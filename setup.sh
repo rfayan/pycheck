@@ -9,7 +9,7 @@ if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
 fi
 
 # Create config folder
-mkdir -p ~/.config/python
+[ ! -d "$HOME"/.config/python ] && mkdir -p ~/.config/python
 
 # Copy config files and pre-commit git hook script
 cp pylama.ini black.toml isort.cfg pycheck-pre-commit.sh ~/.config/python
@@ -20,6 +20,7 @@ pip install --user --upgrade pylama
 npm install -g diff-so-fancy
 
 # Copy executable script to folder included in $PATH
-cp pycheck.sh ~/.local/bin/pycheck
+[ ! -e "$HOME"/.local/bin/pycheck ] && cp pycheck.sh ~/.local/bin/pycheck
 
 echo "All done! Have fun!"
+
