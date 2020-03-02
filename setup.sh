@@ -4,7 +4,7 @@ set -eu
 
 if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   echo "Your "'$PATH'" is missing ~/.local/bin, you need to add it to run pycheck"
-  echo "Add '"'export PATH=$PATH:/home/rfayan/bin'"' to your shell rc (e.g. ~/.bashrc)"
+  echo "Add '"'export PATH=$PATH:$HOME/.local/bin'"' to your shell rc (e.g. ~/.bashrc)"
   exit 1
 fi
 
