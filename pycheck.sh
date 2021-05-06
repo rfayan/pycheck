@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Rafael Fayan, 2019. MIT License
 #
 # Verify python code for logic and stylistic erros with the Pylama tool
