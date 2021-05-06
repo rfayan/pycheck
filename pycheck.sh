@@ -39,6 +39,7 @@ case "$1" in
 		pycheck ( -c | --config )  # Print versions and configuration files
 		pycheck ( -h | --help )    # Print help message (the one you're reading)
 		pycheck ( --add-hook )     # Add git pre-commit hook to repository in current path
+		pycheck ( --install-deps ) # Install python dependencies (detect 3rd party imports in virtual enviroments)
 		EOF
 
 		exit
@@ -58,6 +59,12 @@ case "$1" in
 
 		echo -e "$cyan"'\nBlack config: ' "$BLACK_CONFIG""$NC"
 		cat "$BLACK_CONFIG"
+
+		exit
+		;;
+	--install-deps)
+		pip install mccabe pycodestyle pydocstyle pyflakes pylint astroid black isort
+		pip install pylama
 
 		exit
 		;;
