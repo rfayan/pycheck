@@ -94,15 +94,15 @@ read
 # Run isort to verify if sorting is needed, and if so, print the diff with
 # diff-so-fancy after applying sed substitutions for compatibility and
 # query desired action from the user
-if ( ! isort -sp "$ISORT_CONFIG" --check-only "$@" > /dev/null 2>&1 ); then
-		isort -sp "$ISORT_CONFIG" --diff "$@" | sed 's/.py\(:before\|:after\)/.py/'      |
+if ( ! isort --sp "$ISORT_CONFIG" --check-only "$@" > /dev/null 2>&1 ); then
+		isort --sp "$ISORT_CONFIG" --diff "$@" | sed 's/.py\(:before\|:after\)/.py/'      |
 				sed 's/--- \(.*.py\)/diff --git \1\n&/' | diff-so-fancy                  |
 				(echo -e "$cyan"'--- Imports not sorted, diff bellow: ---'"$NC" && cat)  |
 				less --tabs=4 -RFXS
 		echo -ne "\nApply changes (y/n)? "
 		read answer
 		if [ "$answer" != "${answer#[Yy]}" ] ;then
-				isort -sp "$ISORT_CONFIG" "$@"
+				isort --sp "$ISORT_CONFIG" "$@"
 		fi
 		echo
 else
