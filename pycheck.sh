@@ -13,7 +13,7 @@ set -e # Exit script on any error
 # Config locations for Pylama, Black and Isort
 PYLAMA_CONFIG=~/.config/python/pylama.ini
 BLACK_CONFIG=~/.config/python/black.toml
-ISORT_CONFIG=~/.config/python/  # .isort.cfg file must be inside this folder
+ISORT_CONFIG=~/.config/python/isort.cfg
 PRE_COMMIT_HOOK=~/.config/python/pycheck-pre-commit.sh
 
 # Color code for pylama types of errors, from more to less critical
@@ -94,15 +94,15 @@ read
 # Run isort to verify if sorting is needed, and if so, print the diff with
 # diff-so-fancy after applying sed substitutions for compatibility and
 # query desired action from the user
-if ( ! isort --sp "$ISORT_CONFIG" --check-only "$@" > /dev/null 2>&1 ); then
-		isort --sp "$ISORT_CONFIG" --diff "$@" | sed 's/.py\(:before\|:after\)/.py/'      |
+if ( ! isort --sp "$ISORT_CONFIG" --src . --check-only "$@" > /dev/null 2>&1 ); then
+		isort --sp "$ISORT_CONFIG" --src . --diff "$@" | sed 's/.py\(:before\|:after\)/.py/'     |
 				sed 's/--- \(.*.py\)/diff --git \1\n&/' | diff-so-fancy                  |
 				(echo -e "$cyan"'--- Imports not sorted, diff bellow: ---'"$NC" && cat)  |
 				less --tabs=4 -RFXS
 		echo -ne "\nApply changes (y/n)? "
 		read answer
 		if [ "$answer" != "${answer#[Yy]}" ] ;then
-				isort --sp "$ISORT_CONFIG" "$@"
+				isort --sp "$ISORT_CONFIG" --src . "$@"
 		fi
 		echo
 else
@@ -113,9 +113,9 @@ fi
 # diff-so-fancy after applying sed substitutions for compatibility and
 # query desired action from the user
 if ( ! black --config "$BLACK_CONFIG" --check "$@" > /dev/null 2>&1 ); then
-		black --config "$BLACK_CONFIG" --diff --quiet "$@"                             |
-				sed 's/--- \(.*.py\)/diff --git \1\n&/' | diff-so-fancy                |
-				(echo -e "$cyan"'--- Pycodestyle suggested changes: ---'"$NC" && cat)  |
+		black --config "$BLACK_CONFIG" --diff --quiet "$@"                               |
+				sed 's/--- \(.*.py\)/diff --git \1\n&/' | diff-so-fancy          |
+				(echo -e "$cyan"'--- Black suggested changes: ---'"$NC" && cat)  |
 				less --tabs=4 -RFXS
 		echo -ne "\nApply changes (y/n)? "
 		read answer
